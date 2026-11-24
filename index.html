@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ClearCheck — Calm, Everyday Scam &amp; Authenticity Checker</title>
+
+  <!-- Friendly, Clean Typography: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="tailwind-config.js"></script>
+  
+
+  <!-- Minimalist Micro-Interactions & Smooth Transitions -->
+  
+</head>
+<body class="min-h-screen flex flex-col font-sans text-ink selection:bg-blue-100 selection:text-blue-900 overflow-x-hidden">
+
+  <!-- Gentle Inline Toast Container (replaces alert/confirm) -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full px-4 sm:px-0 pointer-events-none"></div>
+
+  <!-- ===================================================================== -->
+  <!-- 1. CLEAN MINIMAL HEADER                                               -->
+  <!-- ===================================================================== -->
+  <header class="sticky top-0 z-30 bg-[#FAF9F7]/90 backdrop-blur-md border-b border-hairline/80">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <!-- Brand Logo Mark + Name -->
+      <a href="#" onclick="resetToHome(event)" class="flex items-center gap-2.5 group focus:outline-none">
+        <div class="w-9 h-9 rounded-xl bg-brand-soft border border-blue-100 flex items-center justify-center text-brand transition group-hover:scale-105">
+          <!-- Gentle Shield-Check Icon -->
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3.25l7 3v5.15c0 4.65-2.95 8.75-7 9.85-4.05-1.1-7-5.2-7-9.85V6.25l7-3z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.25 12.25l1.9 1.9 3.7-3.9" />
+          </svg>
+        </div>
+        <span class="font-display text-lg font-bold tracking-tight text-ink">ClearCheck</span>
+      </a>
+
+      <!-- Minimal Right Navigation -->
+      <div class="flex items-center gap-3 sm:gap-5">
+        <a href="#how-it-works" class="text-sm font-medium text-muted hover:text-ink transition py-2">
+          How it works
+        </a>
+        <button
+          type="button"
+          onclick="openPrivacyModal()"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium bg-white hover:bg-slate-50 text-ink border border-hairline shadow-subtle transition cursor-pointer"
+        >
+          <svg class="w-3.5 h-3.5 text-safe-text" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+          <span>Privacy First</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 pt-10 pb-16 sm:pt-14 sm:pb-20">
+
+    <!-- =================================================================== -->
+    <!-- 2. WELCOMING HERO SECTION (Compact & Centered)                      -->
+    <!-- =================================================================== -->
+    <section class="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
+      <h1 class="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink leading-tight">
+        Not sure if it's real? Let's check together.
+      </h1>
+      <p class="mt-3.5 text-base sm:text-lg text-muted leading-relaxed">
+        Paste a suspicious message, a link, or upload a photo. We'll explain if it's safe in plain English.
+      </p>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- 3. SINGLE-FOCUS MAIN CHECKER CARD (Centered, max-width 780px)       -->
+    <!-- =================================================================== -->
+    <section id="checker-card" class="max-w-[780px] mx-auto bg-white rounded-3xl border border-hairline shadow-soft p-5 sm:p-8 transition-all">
+
+      <!-- Soft Pill-Style Segmented Control (3 Friendly Tabs) -->
+      <div class="bg-[#F3F4F6] p-1.5 rounded-2xl grid grid-cols-3 gap-1.5 mb-7" role="tablist" aria-label="Choose what to check">
+        <!-- Tab 1: Check a Message -->
+        <button
+          type="button"
+          id="tab-message"
+          role="tab"
+          aria-selected="true"
+          onclick="switchTab('message')"
+          class="tab-pill flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2 py-2.5 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer bg-white text-ink shadow-subtle"
+        >
+          <svg class="w-4 h-4 text-brand shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+          </svg>
+          <span>Check a Message</span>
+        </button>
+
+        <!-- Tab 2: Check a Link -->
+        <button
+          type="button"
+          id="tab-link"
+          role="tab"
+          aria-selected="false"
+          onclick="switchTab('link')"
+          class="tab-pill flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2 py-2.5 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-medium transition-all cursor-pointer text-muted hover:text-ink"
+        >
+          <svg class="w-4 h-4 text-muted shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+          </svg>
+          <span>Check a Link</span>
+        </button>
+
+        <!-- Tab 3: Check a Photo -->
+        <button
+          type="button"
+          id="tab-photo"
+          role="tab"
+          aria-selected="false"
+          onclick="switchTab('photo')"
+          class="tab-pill flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2 py-2.5 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-medium transition-all cursor-pointer text-muted hover:text-ink"
+        >
+          <svg class="w-4 h-4 text-muted shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <span>Check a Photo</span>
+        </button>
+      </div>
+
+      <!-- ================================================================= -->
+      <!-- INPUT PANELS WRAPPER (Hidden during Loading or Result view)       -->
+      <!-- ================================================================= -->
+      <div id="input-views">
+
+        <!-- TAB 1: CHECK A MESSAGE -->
+        <div id="view-message" class="tab-view space-y-4 animate-gentle-in">
+          <div>
+            <label for="message-input" class="sr-only">Paste your message here</label>
+            <textarea
+              id="message-input"
+              rows="5"
+              placeholder="Paste the text message, WhatsApp message, or email here..."
+              class="w-full rounded-2xl bg-[#FAF9F7] border border-hairline focus:bg-white focus:border-brand focus:ring-4 focus:ring-blue-500/10 outline-none p-4 sm:p-5 text-base text-ink placeholder-gray-400 leading-relaxed transition resize-y"
+            ></textarea>
+          </div>
+
+          <!-- Try an Example Chips -->
+          <div class="flex flex-wrap items-center gap-2 pt-1">
+            <span class="text-xs font-medium text-muted mr-1">Try an example:</span>
+            <button
+              type="button"
+              onclick="tryMessageExample('otp')"
+              class="px-3 py-1.5 rounded-full text-xs font-medium bg-[#FAF9F7] hover:bg-blue-50 text-ink hover:text-brand border border-hairline hover:border-blue-200 transition cursor-pointer"
+            >
+              Urgent Bank OTP
+            </button>
+            <button
+              type="button"
+              onclick="tryMessageExample('prize')"
+              class="px-3 py-1.5 rounded-full text-xs font-medium bg-[#FAF9F7] hover:bg-blue-50 text-ink hover:text-brand border border-hairline hover:border-blue-200 transition cursor-pointer"
+            >
+              Fake Prize Message
+            </button>
+            <button
+              type="button"
+              onclick="tryMessageExample('delivery')"
+              class="px-3 py-1.5 rounded-full text-xs font-medium bg-[#FAF9F7] hover:bg-blue-50 text-ink hover:text-brand border border-hairline hover:border-blue-200 transition cursor-pointer"
+            >
+              Normal Delivery Update
+            </button>
+          </div>
+
+          <!-- Action Row -->
+          <div class="pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <p class="text-xs text-muted">We'll look for sneaky wording, fake urgency, or hidden traps.</p>
+            <button
+              type="button"
+              onclick="runMessageCheck()"
+              class="w-full sm:w-auto px-7 py-3 rounded-2xl bg-brand hover:bg-brand-hover active:scale-[0.99] text-white font-semibold text-sm sm:text-base shadow-sm transition cursor-pointer"
+            >
+              Check Message
+            </button>
+          </div>
+        </div>
+
+        <!-- TAB 2: CHECK A LINK -->
+        <div id="view-link" class="tab-view hidden space-y-4 animate-gentle-in">
+          <div>
+            <label for="link-input" class="sr-only">Paste a website link here</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                </svg>
+              </div>
+              <input
+                type="text"
+                id="link-input"
+                placeholder="Paste a website link (e.g., https://example.com)..."
+                class="w-full pl-12 pr-4 py-4 rounded-2xl bg-[#FAF9F7] border border-hairline focus:bg-white focus:border-brand focus:ring-4 focus:ring-blue-500/10 outline-none text-base text-ink placeholder-gray-400 transition"
+                onkeydown="if (event.key === 'Enter') runLinkCheck();"
+              />
+            </div>
+          </div>
+
+          <!-- Try an Example Chips -->
+          <div class="flex flex-wrap items-center gap-2 pt-1">
+            <span class="text-xs font-medium text-muted mr-1">Try an example:</span>
+            <button
+              type="button"
+              onclick="tryLinkExample('bank')"
+              class="px-3 py-1.5 rounded-full text-xs font-medium bg-[#FAF9F7] hover:bg-blue-50 text-ink hover:text-brand border border-hairline hover:border-blue-200 transition cursor-pointer"
+            >
+              Fake Bank Login
+            </button>
+            <button
+              type="button"
+              onclick="tryLinkExample('short')"
+              class="px-3 py-1.5 rounded-full text-xs font-medium bg-[#FAF9F7] hover:bg-blue-50 text-ink hover:text-brand border border-hairline hover:border-blue-200 transition cursor-pointer"
+            >
+              Suspicious Short Link
+            </button>
+            <button
+              type="button"
+              onclick="tryLinkExample('wiki')"
+              class="px-3 py-1.5 rounded-full text-xs font-medium bg-[#FAF9F7] hover:bg-blue-50 text-ink hover:text-brand border border-hairline hover:border-blue-200 transition cursor-pointer"
+            >
+              Official Wikipedia
+            </button>
+          </div>
+
+          <!-- Action Row -->
+          <div class="pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <p class="text-xs text-muted">Safe to paste — we check links without ever opening them on your device.</p>
+            <button
+              type="button"
+              onclick="runLinkCheck()"
+              class="w-full sm:w-auto px-7 py-3 rounded-2xl bg-brand hover:bg-brand-hover active:scale-[0.99] text-white font-semibold text-sm sm:text-base shadow-sm transition cursor-pointer"
+            >
+              Check Link
+            </button>
+          </div>
+        </div>
+
+        <!-- TAB 3: CHECK A PHOTO -->
+        <div id="view-photo" class="tab-view hidden space-y-5 animate-gentle-in">
+          <!-- Warm Dashed Upload Dropzone -->
+          <div
+            id="photo-dropzone"
+            onclick="document.getElementById('photo-file-input').click()"
+            class="group relative rounded-2xl border-2 border-dashed border-[#D8DCE3] hover:border-brand bg-[#FAF9F7] hover:bg-blue-50/30 p-7 sm:p-9 text-center transition cursor-pointer flex flex-col items-center justify-center min-h-[210px]"
+          >
+            <input type="file" id="photo-file-input" accept="image/png,image/jpeg,image/webp" class="hidden" onchange="handlePhotoFileChange(event)" />
+
+            <!-- Default Upload Prompt -->
+            <div id="photo-upload-prompt" class="space-y-3 pointer-events-none">
+              <div class="w-12 h-12 mx-auto rounded-2xl bg-white border border-hairline shadow-subtle flex items-center justify-center text-brand group-hover:scale-105 transition">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-sm sm:text-base font-medium text-ink">Drop a photo here, or click to browse from your device</p>
+                <p class="text-xs text-muted mt-1">Works with PNG, JPG, and WEBP photos</p>
+              </div>
+            </div>
+
+            <!-- Selected Image Preview -->
+            <div id="photo-preview-container" class="hidden w-full flex flex-col items-center gap-3">
+              <img id="photo-preview-img" src="" alt="Selected photo preview" class="max-h-48 w-auto rounded-xl object-contain border border-hairline shadow-subtle bg-white" />
+              <div class="flex items-center gap-2 text-xs text-muted">
+                <span id="photo-preview-name" class="font-medium text-ink truncate max-w-[240px]"></span>
+                <span>&bull;</span>
+                <span class="text-brand underline underline-offset-2">Click to choose another</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sample Photo Buttons -->
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-xs font-medium text-muted mr-1">Or test with a sample photo:</span>
+            <button
+              type="button"
+              onclick="trySamplePhoto('ai')"
+              class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-[#FAF9F7] hover:bg-blue-50 text-ink hover:text-brand border border-hairline hover:border-blue-200 transition cursor-pointer"
+            >
+              Try AI-Generated Sample
+            </button>
+            <button
+              type="button"
+              onclick="trySamplePhoto('real')"
+              class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-[#FAF9F7] hover:bg-blue-50 text-ink hover:text-brand border border-hairline hover:border-blue-200 transition cursor-pointer"
+            >
+              Try Real Photo Sample
+            </button>
+          </div>
+
+          <!-- Action Row -->
+          <div class="pt-1 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <p class="text-xs text-muted">We check lighting, fine textures, and digital editing clues.</p>
+            <button
+              type="button"
+              onclick="runPhotoCheck()"
+              class="w-full sm:w-auto px-7 py-3 rounded-2xl bg-brand hover:bg-brand-hover active:scale-[0.99] text-white font-semibold text-sm sm:text-base shadow-sm transition cursor-pointer"
+            >
+              Check Photo
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================================================================= -->
+      <!-- 4A. CALM LOADING STATE                                            -->
+      <!-- ================================================================= -->
+      <div id="loading-view" class="hidden py-12 sm:py-16 text-center space-y-5 animate-gentle-in">
+        <div class="relative w-14 h-14 mx-auto flex items-center justify-center">
+          <div class="absolute inset-0 rounded-full bg-blue-100 animate-calm-pulse"></div>
+          <div class="relative w-10 h-10 rounded-full bg-white border border-blue-200 flex items-center justify-center text-brand shadow-subtle">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+        </div>
+        <div class="space-y-1.5">
+          <p id="loading-title" class="font-display text-lg font-semibold text-ink">Looking closely for warning signs...</p>
+          <p class="text-sm text-muted">Just a moment — putting everything into plain English for you.</p>
+        </div>
+        <div class="max-w-xs mx-auto h-1.5 bg-gray-100 rounded-full overflow-hidden">
+          <div class="w-1/2 h-full bg-brand/70 rounded-full animate-gentle-progress"></div>
+        </div>
+      </div>
+
+      <!-- ================================================================= -->
+      <!-- 4B. PLAIN-ENGLISH RESULT VIEW                                     -->
+      <!-- ================================================================= -->
+      <div id="result-view" class="hidden space-y-6 animate-gentle-in">
+
+        <!-- Friendly Verdict Banner -->
+        <div id="result-banner" class="rounded-2xl p-5 sm:p-6 border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="flex items-start gap-4">
+            <div id="result-icon-wrap" class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0"></div>
+            <div>
+              <span id="result-type-label" class="text-xs font-medium uppercase tracking-wide opacity-80"></span>
+              <h2 id="result-title" class="font-display text-xl sm:text-2xl font-bold leading-snug mt-0.5"></h2>
+              <p id="result-subtitle" class="text-sm mt-1 leading-relaxed opacity-90"></p>
+            </div>
+          </div>
+
+          <!-- Simple Horizontal Confidence Bar -->
+          <div class="sm:w-44 shrink-0 bg-white/80 rounded-xl p-3 border border-black/5">
+            <div class="flex items-center justify-between text-xs font-semibold mb-1.5">
+              <span class="text-muted">Confidence</span>
+              <span id="result-confidence-label" class="text-ink">92% confident</span>
+            </div>
+            <div class="w-full h-2 bg-gray-200/80 rounded-full overflow-hidden">
+              <div id="result-confidence-bar" class="h-full rounded-full transition-all duration-700" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dynamic Module-Specific Detail Section (Message / Link / Photo) -->
+        <div id="result-specific-section" class="space-y-4"></div>
+
+        <!-- "Why we think this" — Plain-English Bullet Points -->
+        <div class="rounded-2xl bg-[#FAF9F7] border border-hairline p-5 space-y-3">
+          <h3 class="font-display text-sm font-bold text-ink">Why we think this</h3>
+          <ul id="result-reasons-list" class="space-y-2.5 text-sm text-ink/90 leading-relaxed"></ul>
+        </div>
+
+        <!-- "What you should do" — Gentle Tinted Advice Box -->
+        <div id="result-advice-box" class="rounded-2xl p-5 border flex items-start gap-3.5">
+          <div id="result-advice-icon" class="mt-0.5 shrink-0"></div>
+          <div>
+            <h3 class="font-display text-sm font-bold text-ink">What you should do</h3>
+            <p id="result-advice-text" class="text-sm text-ink/85 mt-1 leading-relaxed"></p>
+          </div>
+        </div>
+
+        <!-- Reset Button -->
+        <div class="pt-2 flex justify-center sm:justify-start">
+          <button
+            type="button"
+            onclick="resetToInput()"
+            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-ink bg-[#FAF9F7] hover:bg-gray-100 border border-hairline transition cursor-pointer"
+          >
+            <svg class="w-4 h-4 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span>Check something else</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- 5. MINIMAL RECENT CHECKS SECTION                                    -->
+    <!-- =================================================================== -->
+    <section id="recent-checks-section" class="max-w-[780px] mx-auto mt-10">
+      <div class="flex items-center justify-between mb-3 px-1">
+        <h2 class="font-display text-sm font-semibold text-muted uppercase tracking-wider">Recent Checks</h2>
+        <button
+          type="button"
+          id="btn-clear-recent"
+          onclick="clearRecentChecks()"
+          class="text-xs font-medium text-muted hover:text-ink transition cursor-pointer"
+        >
+          Clear
+        </button>
+      </div>
+
+      <div id="recent-checks-list" class="bg-white rounded-2xl border border-hairline shadow-subtle divide-y divide-hairline overflow-hidden">
+        <!-- Populated dynamically -->
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- 6. MINIMAL 3-STEP "HOW IT WORKS" STRIP                              -->
+    <!-- =================================================================== -->
+    <section id="how-it-works" class="max-w-[780px] mx-auto mt-16 sm:mt-20 pt-10 border-t border-hairline">
+      <div class="text-center mb-8">
+        <h2 class="font-display text-xl sm:text-2xl font-bold text-ink">How ClearCheck works</h2>
+        <p class="text-sm text-muted mt-1.5">Simple, calm protection in three quick steps.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
+        <!-- Step 1 -->
+        <div class="text-center sm:text-left space-y-2.5">
+          <div class="w-10 h-10 mx-auto sm:mx-0 rounded-xl bg-white border border-hairline shadow-subtle flex items-center justify-center text-brand">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <h3 class="font-display text-base font-semibold text-ink">1. Share what you got</h3>
+          <p class="text-sm text-muted leading-relaxed">
+            Paste a text, drop in a link, or pick a photo you're unsure about. No sign-up required.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="text-center sm:text-left space-y-2.5">
+          <div class="w-10 h-10 mx-auto sm:mx-0 rounded-xl bg-white border border-hairline shadow-subtle flex items-center justify-center text-brand">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+          </div>
+          <h3 class="font-display text-base font-semibold text-ink">2. Smart AI review</h3>
+          <p class="text-sm text-muted leading-relaxed">
+            Our AI gently looks for common scam tricks, fake lookalike websites, and AI photo clues.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="text-center sm:text-left space-y-2.5">
+          <div class="w-10 h-10 mx-auto sm:mx-0 rounded-xl bg-white border border-hairline shadow-subtle flex items-center justify-center text-brand">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="font-display text-base font-semibold text-ink">3. Clear, calm advice</h3>
+          <p class="text-sm text-muted leading-relaxed">
+            Get a straightforward answer in everyday language, plus helpful tips on what to do next.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Minimal Clean Footer -->
+  <footer class="border-t border-hairline bg-white/60 py-7">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted">
+      <p><span class="font-semibold text-ink">ClearCheck</span> &mdash; Designed for everyday digital safety.</p>
+      <p>Always verify urgent financial requests using official phone numbers.</p>
+    </div>
+  </footer>
+
+  <!-- ===================================================================== -->
+  <!-- PRIVACY FIRST MODAL                                                   -->
+  <!-- ===================================================================== -->
+  <div id="privacy-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/35 backdrop-blur-[2px]" onclick="if (event.target === this) closePrivacyModal();">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 border border-hairline shadow-soft space-y-4 animate-gentle-in">
+      <div class="flex items-start justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-safe-bg border border-safe-border flex items-center justify-center text-safe-text">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-display text-lg font-bold text-ink">Your privacy comes first</h3>
+            <p class="text-xs text-muted">Simple, private, and stress-free</p>
+          </div>
+        </div>
+        <button type="button" onclick="closePrivacyModal()" class="p-1.5 rounded-xl text-muted hover:text-ink hover:bg-gray-100 transition cursor-pointer" aria-label="Close">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-sm text-muted leading-relaxed">
+        <p>
+          Checking a suspicious text, link, or photo shouldn't feel risky. Everything you test in ClearCheck stays private to your session.
+        </p>
+        <ul class="space-y-2 text-ink/90">
+          <li class="flex items-start gap-2.5">
+            <span class="text-safe-text font-bold mt-0.5">&#10003;</span>
+            <span>No account, phone number, or email is needed to use ClearCheck.</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="text-safe-text font-bold mt-0.5">&#10003;</span>
+            <span>Links are inspected safely without opening them on your phone or computer.</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="text-safe-text font-bold mt-0.5">&#10003;</span>
+            <span>Your recent checks list stays only in this browser tab and clears whenever you want.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="pt-2">
+        <button
+          type="button"
+          onclick="closePrivacyModal()"
+          class="w-full py-2.5 rounded-xl bg-brand hover:bg-brand-hover text-white font-semibold text-sm transition cursor-pointer"
+        >
+          Sounds good
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- APPLICATION LOGIC & BACKEND-READY AI FUNCTIONS                        -->
+  <!-- ===================================================================== -->
+  
+  <script src="script.js"></script>
+</body>
+</html>

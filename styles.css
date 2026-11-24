@@ -1,0 +1,75 @@
+html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: #FAF9F7;
+      color: #1F2937;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Gentle fade & upward slide for switching tabs and revealing results */
+    @keyframes gentleFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-gentle-in {
+      animation: gentleFadeIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    /* Calm breathing animation for the loading state */
+    @keyframes calmPulse {
+      0%, 100% {
+        transform: scale(0.95);
+        opacity: 0.55;
+      }
+      50% {
+        transform: scale(1.06);
+        opacity: 1;
+      }
+    }
+
+    .animate-calm-pulse {
+      animation: calmPulse 1.8s ease-in-out infinite;
+    }
+
+    /* Smooth sliding progress shimmer during checking */
+    @keyframes gentleProgress {
+      0% {
+        transform: translateX(-100%);
+      }
+      100% {
+        transform: translateX(220%);
+      }
+    }
+
+    .animate-gentle-progress {
+      animation: gentleProgress 1.6s ease-in-out infinite;
+    }
+
+    /* Soft highlight styling for flagged phrases inside checked messages */
+    .highlight-danger {
+      background-color: #FEE2E2;
+      color: #991B1B;
+      border-bottom: 2px solid #F87171;
+      padding: 1px 4px;
+      border-radius: 5px;
+      font-weight: 500;
+    }
+
+    .highlight-caution {
+      background-color: #FEF3C7;
+      color: #92400E;
+      border-bottom: 2px solid #FBBF24;
+      padding: 1px 4px;
+      border-radius: 5px;
+      font-weight: 500;
+    }
